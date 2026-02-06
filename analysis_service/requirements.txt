@@ -1,0 +1,13 @@
+# TradingCrew Analysis Service Dependencies
+# 这些依赖由主项目的 requirements.txt 提供，此文件仅作参考
+
+fastapi>=0.104.0
+uvicorn>=0.24.0
+python-dotenv>=1.0.0
+
+# 核心分析依赖（来自主项目）
+# langchain
+# langgraph
+# openai / anthropic
+# yfinance
+# akshare

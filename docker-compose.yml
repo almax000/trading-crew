@@ -1,0 +1,45 @@
+# TradingCrew Web UI Docker Compose 配置
+#
+# 启动:
+#   docker-compose up -d
+#
+# 查看日志:
+#   docker-compose logs -f
+#
+# 停止:
+#   docker-compose down
+
+version: '3.8'
+
+services:
+  tradingcrew:
+    build: .
+    container_name: tradingcrew-web
+    ports:
+      - "127.0.0.1:1788:1788"
+    environment:
+      # API Keys (从 .env 文件加载)
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY}
+      # 可选: 额外的邀请码
+      # - INVITE_CODE_1=friend1:password1
+      # - INVITE_CODE_2=friend2:password2
+    env_file:
+      - .env
+    volumes:
+      # 持久化结果目录 (可选)
+      - ./results:/app/results
+      # 持久化数据缓存 (可选)
+      - ./data_cache:/app/tradingcrew/dataflows/data_cache
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:1788')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

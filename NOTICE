@@ -1,0 +1,15 @@
+TradingCrew
+Copyright 2025 jojo
+
+This project is a derivative work based on:
+TradingAgents - https://github.com/TauricResearch/TradingAgents
+Copyright 2025 Yijia Xiao, Edward Sun, Di Luo, Wei Wang
+Licensed under Apache License 2.0
+
+Original paper: https://arxiv.org/abs/2412.20138
+
+Additional components:
+- Web GUI (Bun + Hono)
+- A-share market support (AKShare)
+- Multi-market configuration
+- Session management & SSE streaming

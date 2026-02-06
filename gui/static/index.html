@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingCrew - 智能交易分析</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- 登录页面 - 初始隐藏，JS 检查后显示 -->
+    <div id="login-page" class="login-container" style="display: none;">
+        <div class="login-box">
+            <h1>TradingCrew</h1>
+            <p class="login-subtitle">多 Agent 协作的 AI 交易分析系统</p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">登录</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 主界面 -->
+    <div id="main-page" class="main-container" style="display: none;">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-info">
+                    <span class="user-name" id="user-display">用户</span>
+                    <button id="logout-btn" class="btn btn-sm btn-secondary">登出</button>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <button id="new-session-btn" class="btn btn-primary btn-block">
+                    + 新建会话
+                </button>
+
+                <div class="running-count" id="running-count">
+                    当前运行: 0 个会话
+                </div>
+
+                <h3 class="sidebar-title">会话列表</h3>
+                <div id="session-list" class="session-list">
+                    <div class="empty-state">暂无会话记录</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 新建会话视图 -->
+            <div id="new-session-view" class="view">
+                <h2>新建分析会话</h2>
+
+                <form id="session-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="market">市场</label>
+                            <select id="market" name="market">
+                                <option value="A股">A股</option>
+                                <option value="美股">美股</option>
+                                <option value="港股">港股</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-date">开始日期</label>
+                            <input type="date" id="start-date" name="start_date">
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">结束日期</label>
+                            <input type="date" id="end-date" name="end_date">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>快捷选择</label>
+                        <div id="date-presets" class="date-presets"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ticker">股票代码</label>
+                        <input type="text" id="ticker" name="ticker"
+                               placeholder="例如: 600519 (A股), AAPL (美股), 0700 (港股)">
+                        <div id="ticker-status" class="ticker-status"></div>
+                    </div>
+
+                    <details class="advanced-options">
+                        <summary>高级选项</summary>
+                        <div class="form-group">
+                            <label>启用的分析师</label>
+                            <div id="analyst-checkboxes" class="checkbox-group"></div>
+                        </div>
+                    </details>
+
+                    <div id="submit-error" class="error-message" style="display: none;"></div>
+                    <button type="submit" id="submit-btn" class="btn btn-primary btn-lg" disabled>
+                        开始分析
+                    </button>
+                </form>
+            </div>
+
+            <!-- Session 详情视图 -->
+            <div id="session-detail-view" class="view" style="display: none;">
+                <div class="session-detail-header">
+                    <div id="session-header" class="session-header"></div>
+                </div>
+
+                <!-- 顶部标签栏 -->
+                <div class="top-tabs">
+                    <button class="top-tab-btn active" data-tab="result">分析结果</button>
+                    <button class="top-tab-btn" data-tab="process">分析过程</button>
+                    <button class="top-tab-btn" data-tab="reports">报告详情</button>
+                </div>
+
+                <!-- 分析结果 -->
+                <div id="tab-result" class="top-tab-content active">
+                    <div id="session-status" class="session-status-box"></div>
+                    <div id="agent-status" class="agent-status"></div>
+                </div>
+
+                <!-- 分析过程 -->
+                <div id="tab-process" class="top-tab-content">
+                    <div id="analysis-output" class="analysis-output-full">
+                        等待分析开始...
+                    </div>
+                </div>
+
+                <!-- 报告详情 -->
+                <div id="tab-reports" class="top-tab-content">
+                    <div id="report-details" class="report-details-full">
+                        分析完成后显示各 Agent 的详细报告
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Markdown 渲染库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>

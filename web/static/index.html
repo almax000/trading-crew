@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingCrew - 智能交易分析</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- 登录页面 - 初始隐藏，JS 检查后显示 -->
+    <div id="login-page" class="login-container" style="display: none;">
+        <div class="login-box">
+            <h1>TradingCrew</h1>
+            <p class="login-subtitle">多 Agent 协作的 AI 交易分析系统</p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                </div>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary btn-block">登录</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 主界面 -->
+    <div id="main-page" class="main-container" style="display: none;">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-info">
+                    <span class="user-name" id="user-display">用户</span>
+                    <button id="logout-btn" class="btn btn-sm btn-secondary">登出</button>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <button id="new-session-btn" class="btn btn-primary btn-block">
+                    + 新建会话
+                </button>
+
+                <div class="running-count" id="running-count">
+                    当前运行: 0 个会话
+                </div>
+
+                <h3 class="sidebar-title">会话列表</h3>
+                <div id="session-list" class="session-list">
+                    <div class="empty-state">暂无会话记录</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 新建会话视图 -->
+            <div id="new-session-view" class="view">
+                <h2>新建分析会话</h2>
+
+                <form id="session-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="market">市场</label>
+                            <div class="market-toggle" id="market-toggle">
+                                <button type="button" class="market-btn active" data-value="A股">A股</button>
+                                <button type="button" class="market-btn" data-value="港股">港股</button>
+                                <button type="button" class="market-btn" data-value="美股">美股</button>
+                            </div>
+                            <input type="hidden" id="market" name="market" value="A股">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-date">开始日期</label>
+                            <input type="date" id="start-date" name="startDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">结束日期</label>
+                            <input type="date" id="end-date" name="endDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>快捷选择</label>
+                        <div id="date-presets" class="date-presets"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ticker">股票代码</label>
+                        <input type="text" id="ticker" name="ticker"
+                               placeholder="例如: 600519 (A股), AAPL (美股), 0700 (港股)">
+                        <div id="ticker-status" class="ticker-status"></div>
+                    </div>
+
+                    <details class="advanced-options">
+                        <summary>高级选项</summary>
+                        <div class="form-group">
+                            <label>启用的分析师</label>
+                            <div id="analyst-checkboxes" class="checkbox-group"></div>
+                        </div>
+                    </details>
+
+                    <div class="form-group form-group-narrow">
+                        <label for="model">分析模型</label>
+                        <select id="model" name="model">
+                            <option value="deepseek-v3" selected>DeepSeek V3</option>
+                            <option value="qwen3-max">Qwen3 Max</option>
+                        </select>
+                    </div>
+
+                    <div id="submit-error" class="error-message" style="display: none;"></div>
+                    <button type="submit" id="submit-btn" class="btn btn-primary btn-lg" disabled>
+                        开始分析
+                    </button>
+                </form>
+            </div>
+
+            <!-- Session 详情视图 -->
+            <div id="session-detail-view" class="view" style="display: none;">
+                <div class="session-toolbar">
+                    <div id="session-header" class="session-header"></div>
+                    <div class="toolbar-right">
+                        <div class="font-size-selector">
+                            <span class="font-size-label">字号</span>
+                            <button class="font-size-btn size-s" data-size="small" title="小">A</button>
+                            <button class="font-size-btn size-m active" data-size="medium" title="中">A</button>
+                            <button class="font-size-btn size-l" data-size="large" title="大">A</button>
+                            <button class="font-size-btn size-xl" data-size="xlarge" title="特大">A</button>
+                        </div>
+                        <div class="session-actions" id="session-actions"></div>
+                    </div>
+                </div>
+                <div id="session-decision"></div>
+                <div id="agent-status"></div>
+                <div id="report-content"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 删除确认弹窗 -->
+    <div id="confirm-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3 id="confirm-modal-title">确认删除</h3>
+            <p id="confirm-modal-message">确定要删除这个会话吗？</p>
+            <div class="modal-actions">
+                <button id="confirm-modal-cancel" class="btn btn-secondary">取消</button>
+                <button id="confirm-modal-confirm" class="btn btn-danger">删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Markdown 渲染库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
