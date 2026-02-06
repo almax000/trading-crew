@@ -17,24 +17,21 @@ class AnalysisService:
     分析服务
 
     封装 TradingCrewGraph，提供流式分析功能。
-    默认使用 DeepSeek API（如果配置了 DEEPSEEK_API_KEY）。
+    默认使用阿里云百炼 (DashScope) API。
     """
 
-    def __init__(self, config: Dict[str, Any] = None, use_deepseek: bool = True):
+    def __init__(self, config: Dict[str, Any] = None):
         """
         初始化分析服务
 
         Args:
             config: TradingCrew 配置，可覆盖默认配置
-            use_deepseek: 是否优先使用 DeepSeek（默认 True）
         """
-        import os
         from dotenv import load_dotenv
 
         # 先加载 .env 文件
         load_dotenv()
 
-        self.use_deepseek = use_deepseek and bool(os.environ.get("DEEPSEEK_API_KEY"))
         self.custom_config = config
 
         # 延迟初始化
@@ -43,12 +40,8 @@ class AnalysisService:
 
     def _get_config(self, market: str) -> Dict[str, Any]:
         """获取指定市场的配置"""
-        if self.use_deepseek:
-            from tradingcrew.market_config import get_deepseek_config
-            config = get_deepseek_config(market=market)
-        else:
-            from tradingcrew.market_config import get_openai_config
-            config = get_openai_config(market=market)
+        from tradingcrew.market_config import get_dashscope_config
+        config = get_dashscope_config(market=market)
 
         # 应用自定义配置
         if self.custom_config:

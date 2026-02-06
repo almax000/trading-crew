@@ -452,7 +452,8 @@ def select_llm_config() -> dict:
     provider = questionary.select(
         "选择 LLM 提供商:",
         choices=[
-            questionary.Choice("DeepSeek (推荐, 性价比高)", value="deepseek"),
+            questionary.Choice("DashScope 百炼 (推荐, DeepSeek/Qwen)", value="dashscope"),
+            questionary.Choice("OpenRouter (国际, 400+ 模型)", value="openrouter"),
             questionary.Choice("OpenAI", value="openai"),
             questionary.Choice("Ollama (本地)", value="ollama"),
         ],
@@ -567,7 +568,7 @@ def confirm_backtest_settings(
     console.print(f"\n[bold]市场:[/bold] {market_info.get('name', market)} ({market})")
     console.print(f"[bold]股票:[/bold] {', '.join(stocks)} ({len(stocks)} 只)")
     console.print(f"[bold]日期范围:[/bold] {start_date} 至 {end_date}")
-    console.print(f"[bold]LLM 提供商:[/bold] {llm_config.get('llm_provider', 'deepseek')}")
+    console.print(f"[bold]LLM 提供商:[/bold] {llm_config.get('llm_provider', 'dashscope')}")
     console.print(f"[bold]辩论轮数:[/bold] {llm_config.get('max_debate_rounds', 2)}")
 
     analyst_names = {

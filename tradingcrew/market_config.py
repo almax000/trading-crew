@@ -150,47 +150,6 @@ def get_market_config(
     return config
 
 
-def get_deepseek_config(
-    market: str = "A-share",
-    deep_think_model: str = "deepseek-reasoner",
-    quick_think_model: str = "deepseek-chat",
-    max_debate_rounds: int = 2,
-    max_risk_discuss_rounds: int = 2,
-) -> dict:
-    """
-    获取使用 DeepSeek API 的配置
-
-    Args:
-        market: 市场类型 ("A-share", "US", "HK")
-        deep_think_model: 深度思考模型
-        quick_think_model: 快速思考模型
-        max_debate_rounds: 辩论轮数
-        max_risk_discuss_rounds: 风险讨论轮数
-
-    Returns:
-        配置字典
-    """
-    import os
-    from dotenv import load_dotenv
-    load_dotenv()
-
-    # 设置 DeepSeek API Key
-    deepseek_key = os.getenv("DEEPSEEK_API_KEY")
-    if deepseek_key:
-        os.environ["OPENAI_API_KEY"] = deepseek_key
-
-    config = get_market_config(market)
-    config.update({
-        "llm_provider": "deepseek",
-        "backend_url": "https://api.deepseek.com/v1",
-        "deep_think_llm": deep_think_model,
-        "quick_think_llm": quick_think_model,
-        "max_debate_rounds": max_debate_rounds,
-        "max_risk_discuss_rounds": max_risk_discuss_rounds,
-    })
-    return config
-
-
 def get_openai_config(
     market: str = "US",
     deep_think_model: str = "o4-mini",
@@ -241,12 +200,26 @@ MODEL_PRESETS = {
         "deep_think_model": "qwen3-max",
         "quick_think_model": "qwen3-max",
     },
-    "deepseek-official": {
-        "name": "DeepSeek (官方)",
-        "description": "DeepSeek 官方 API",
-        "provider": "deepseek",
-        "deep_think_model": "deepseek-reasoner",
-        "quick_think_model": "deepseek-chat",
+    "gpt-4o": {
+        "name": "GPT-4o",
+        "description": "OpenAI GPT-4o via OpenRouter",
+        "provider": "openrouter",
+        "deep_think_model": "openai/gpt-4o",
+        "quick_think_model": "openai/gpt-4o-mini",
+    },
+    "claude-sonnet-4": {
+        "name": "Claude Sonnet 4",
+        "description": "Anthropic Claude Sonnet 4 via OpenRouter",
+        "provider": "openrouter",
+        "deep_think_model": "anthropic/claude-sonnet-4",
+        "quick_think_model": "anthropic/claude-sonnet-4",
+    },
+    "deepseek/deepseek-chat-v3-0324": {
+        "name": "DeepSeek V3 (OpenRouter)",
+        "description": "DeepSeek V3 via OpenRouter",
+        "provider": "openrouter",
+        "deep_think_model": "deepseek/deepseek-chat-v3-0324",
+        "quick_think_model": "deepseek/deepseek-chat-v3-0324",
     },
 }
 
@@ -289,6 +262,56 @@ def get_dashscope_config(
     config.update({
         "llm_provider": "dashscope",
         "backend_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "deep_think_llm": preset["deep_think_model"],
+        "quick_think_llm": preset["quick_think_model"],
+        "max_debate_rounds": max_debate_rounds,
+        "max_risk_discuss_rounds": max_risk_discuss_rounds,
+    })
+    return config
+
+
+def get_openrouter_config(
+    market: str = "US",
+    model: str = "gpt-4o",
+    max_debate_rounds: int = 2,
+    max_risk_discuss_rounds: int = 2,
+) -> dict:
+    """
+    获取使用 OpenRouter API 的配置
+
+    OpenRouter 是国际 LLM 聚合平台，支持 400+ 模型 (GPT, Claude, DeepSeek 等)，
+    OpenAI 兼容 API，零加价。
+
+    支持的模型预设:
+    - gpt-4o: OpenAI GPT-4o
+    - claude-sonnet-4: Anthropic Claude Sonnet 4
+    - deepseek/deepseek-chat-v3-0324: DeepSeek V3
+
+    Args:
+        market: 市场类型 ("A-share", "US", "HK")
+        model: 模型名称 (MODEL_PRESETS 中的 openrouter 模型)
+        max_debate_rounds: 辩论轮数
+        max_risk_discuss_rounds: 风险讨论轮数
+
+    Returns:
+        配置字典
+    """
+    import os
+    from dotenv import load_dotenv
+    load_dotenv()
+
+    # 设置 OpenRouter API Key
+    openrouter_key = os.getenv("OPENROUTER_API_KEY")
+    if openrouter_key:
+        os.environ["OPENAI_API_KEY"] = openrouter_key
+
+    # 获取模型预设
+    preset = MODEL_PRESETS.get(model, MODEL_PRESETS["gpt-4o"])
+
+    config = get_market_config(market)
+    config.update({
+        "llm_provider": "openrouter",
+        "backend_url": "https://openrouter.ai/api/v1",
         "deep_think_llm": preset["deep_think_model"],
         "quick_think_llm": preset["quick_think_model"],
         "max_debate_rounds": max_debate_rounds,

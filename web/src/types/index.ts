@@ -9,7 +9,7 @@ export type SessionStatus = 'pending' | 'queued' | 'running' | 'completed' | 'er
 export type Market = 'A-share' | 'US' | 'HK'
 
 // 模型类型
-export type Model = 'deepseek-v3' | 'qwen3-max'
+export type Model = 'deepseek-v3' | 'qwen3-max' | 'gpt-4o' | 'claude-sonnet-4' | 'deepseek/deepseek-chat-v3-0324'
 
 // 交易决策
 export type Decision = 'BUY' | 'SELL' | 'HOLD' | ''

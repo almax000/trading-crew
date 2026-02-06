@@ -186,17 +186,17 @@ class BacktestTUI:
         """
         from tradingcrew.market_config import (
             get_market_config,
-            get_deepseek_config,
+            get_dashscope_config,
             get_openai_config,
         )
         from tradingcrew.backtest.runner import BacktestRunner
         from tradingcrew.backtest.multi_market_calendar import get_trading_days_in_range
 
         # 根据选择获取配置
-        llm_provider = config.get("llm_provider", "deepseek")
+        llm_provider = config.get("llm_provider", "dashscope")
 
-        if llm_provider == "deepseek":
-            run_config = get_deepseek_config(
+        if llm_provider in ("dashscope", "deepseek"):
+            run_config = get_dashscope_config(
                 market=self.market,
                 max_debate_rounds=config.get("max_debate_rounds", 2),
                 max_risk_discuss_rounds=config.get("max_risk_discuss_rounds", 2),

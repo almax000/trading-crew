@@ -73,7 +73,7 @@ class BacktestConfig:
     start_date: str = ""
     end_date: str = ""
     market: str = "A-share"  # A-share, US, HK
-    llm_provider: str = "deepseek"
+    llm_provider: str = "dashscope"
     max_debate_rounds: int = 2
     analysts: List[str] = field(default_factory=lambda: ["market", "social", "news", "fundamentals"])
 
@@ -369,7 +369,7 @@ class BacktestApp(App):
         """在后台线程运行回测"""
         from tradingcrew.market_config import (
             get_market_config,
-            get_deepseek_config,
+            get_dashscope_config,
             get_openai_config,
         )
         from tradingcrew.backtest.runner import BacktestRunner
@@ -380,8 +380,8 @@ class BacktestApp(App):
 
         try:
             # 配置 (使用多市场配置)
-            if self.config.llm_provider == "deepseek":
-                run_config = get_deepseek_config(
+            if self.config.llm_provider in ("dashscope", "deepseek"):
+                run_config = get_dashscope_config(
                     market=self.config.market,
                     max_debate_rounds=self.config.max_debate_rounds,
                     max_risk_discuss_rounds=self.config.max_debate_rounds,
@@ -632,7 +632,7 @@ def main():
             start_date=start_date,
             end_date=end_date,
             market=market,
-            llm_provider=llm_config.get("llm_provider", "deepseek"),
+            llm_provider=llm_config.get("llm_provider", "dashscope"),
             max_debate_rounds=llm_config.get("max_debate_rounds", 2),
             analysts=analysts,
         )

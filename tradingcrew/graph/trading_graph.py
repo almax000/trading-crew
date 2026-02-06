@@ -76,7 +76,7 @@ class TradingCrewGraph:
         # 设置较长的超时时间 (5分钟) 以应对跨境网络延迟
         llm_timeout = self.config.get("llm_timeout", 300)
 
-        if self.config["llm_provider"].lower() in ["openai", "ollama", "openrouter", "deepseek", "dashscope"]:
+        if self.config["llm_provider"].lower() in ["openai", "ollama", "openrouter", "dashscope"]:
             self.deep_thinking_llm = ChatOpenAI(
                 model=self.config["deep_think_llm"],
                 base_url=self.config["backend_url"],

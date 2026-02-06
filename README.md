@@ -12,7 +12,7 @@ Multi-agent LLM trading framework with Web GUI and China A-share support.
 - **Multi-agent debate system**: Analysts → Researchers (bull/bear debate) → Trader → Risk team → Decision
 - **Web GUI**: Real-time streaming analysis with SSE
 - **Multi-market**: A-share (AKShare), US & HK stocks (yfinance)
-- **Multi-LLM**: DashScope (DeepSeek-V3, Qwen3), DeepSeek, OpenAI
+- **Multi-LLM**: DashScope (DeepSeek-V3, Qwen3), OpenRouter (GPT, Claude, DeepSeek), OpenAI
 
 ## Architecture
 
@@ -43,9 +43,9 @@ bun run src/index.ts
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `DASHSCOPE_API_KEY` | Recommended | Alibaba Cloud DashScope |
-| `DEEPSEEK_API_KEY` | Alternative | DeepSeek official API |
-| `OPENAI_API_KEY` | Alternative | OpenAI API |
+| `DASHSCOPE_API_KEY` | Recommended (China) | Alibaba Cloud DashScope |
+| `OPENROUTER_API_KEY` | Recommended (Intl) | OpenRouter (400+ models) |
+| `OPENAI_API_KEY` | Alternative | OpenAI direct API |
 
 ## Citation
 

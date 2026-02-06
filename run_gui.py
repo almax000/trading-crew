@@ -40,9 +40,10 @@ def main():
     load_env()
 
     # 检查环境变量
-    if not os.environ.get("DEEPSEEK_API_KEY"):
-        print("警告: DEEPSEEK_API_KEY 未设置")
-        print("请设置环境变量或创建 .env 文件")
+    if not os.environ.get("DASHSCOPE_API_KEY") and not os.environ.get("OPENROUTER_API_KEY"):
+        print("警告: 未检测到 API Key")
+        print("请设置 DASHSCOPE_API_KEY (中国用户) 或 OPENROUTER_API_KEY (国际用户)")
+        print("参考 .env.example 配置环境变量")
         print()
 
     # 获取端口 (Railway 使用 PORT 环境变量)

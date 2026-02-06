@@ -37,7 +37,7 @@ class AnalyzeRequest(BaseModel):
     date: str
     market: str = "A-share"
     analysts: List[str] = ["market", "social", "news", "fundamentals"]
-    model: str = "deepseek-v3"  # 可选: deepseek-v3, qwen3-max
+    model: str = "deepseek-v3"  # 可选: deepseek-v3, qwen3-max, gpt-4o, claude-sonnet-4
 
 
 def run_analysis_in_thread(

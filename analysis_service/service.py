@@ -56,7 +56,7 @@ class AnalysisService:
 
         # 检测可用的 API
         self.has_dashscope = bool(os.environ.get("DASHSCOPE_API_KEY"))
-        self.has_deepseek = bool(os.environ.get("DEEPSEEK_API_KEY"))
+        self.has_openrouter = bool(os.environ.get("OPENROUTER_API_KEY"))
 
         # 延迟初始化
         self._graph = None
@@ -68,26 +68,22 @@ class AnalysisService:
 
         Args:
             market: 市场类型 ("A-share", "US", "HK")
-            model: 模型名称 ("deepseek-v3", "qwen3-max", "deepseek-official")
+            model: 模型名称 ("deepseek-v3", "qwen3-max", "gpt-4o", "claude-sonnet-4", etc.)
         """
         # 默认使用 deepseek-v3
         if not model:
             model = "deepseek-v3"
 
-        # 根据模型选择配置
-        if model in ["deepseek-v3", "qwen3-max"]:
-            # 使用百炼 API
-            if self.has_dashscope:
-                from tradingcrew.market_config import get_dashscope_config
-                config = get_dashscope_config(market=market, model=model)
-            else:
-                # 回退到 DeepSeek 官方
-                from tradingcrew.market_config import get_deepseek_config
-                config = get_deepseek_config(market=market)
-        elif model == "deepseek-official":
-            # 使用 DeepSeek 官方 API
-            from tradingcrew.market_config import get_deepseek_config
-            config = get_deepseek_config(market=market)
+        from tradingcrew.market_config import MODEL_PRESETS
+
+        # 根据模型预设的 provider 选择配置
+        preset = MODEL_PRESETS.get(model)
+        if preset and preset["provider"] == "dashscope":
+            from tradingcrew.market_config import get_dashscope_config
+            config = get_dashscope_config(market=market, model=model)
+        elif preset and preset["provider"] == "openrouter":
+            from tradingcrew.market_config import get_openrouter_config
+            config = get_openrouter_config(market=market, model=model)
         else:
             # 未知模型，使用默认
             from tradingcrew.market_config import get_dashscope_config

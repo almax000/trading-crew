@@ -23,7 +23,7 @@
 ### 技术栈
 
 - **核心框架**: LangGraph (状态机编排)
-- **LLM**: DeepSeek / 阿里云百炼 (DashScope) / OpenAI
+- **LLM**: 阿里云百炼 (DashScope) / OpenRouter / OpenAI
 - **数据源**: AKShare (A股), yfinance (美股/港股), Alpha Vantage
 - **Web 服务**: Bun + Hono (TypeScript) + FastAPI (Python)
 - **部署**: Railway (Docker)
@@ -256,10 +256,10 @@ async for event_type, agent, content in graph.propagate_streaming(ticker, date):
 **重要配置**:
 ```python
 config = {
-    "llm_provider": "deepseek",           # LLM 提供商
-    "backend_url": "https://api.deepseek.com/v1",
-    "deep_think_llm": "deepseek-chat",    # 用于 Manager
-    "quick_think_llm": "deepseek-chat",   # 用于 Analyst/Researcher
+    "llm_provider": "dashscope",          # LLM 提供商 (dashscope/openrouter/openai)
+    "backend_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "deep_think_llm": "deepseek-v3",      # 用于 Manager
+    "quick_think_llm": "deepseek-v3",     # 用于 Analyst/Researcher
     "llm_timeout": 300,                   # 超时 (秒)
     "max_debate_rounds": 1,               # 研究辩论轮数
     "max_risk_discuss_rounds": 1,         # 风控讨论轮数
@@ -301,13 +301,13 @@ A股: akshare → yfinance → local
 - 不同 LLM 提供商的配置工厂
 
 ```python
-from tradingcrew.market_config import get_dashscope_config, get_deepseek_config
+from tradingcrew.market_config import get_dashscope_config, get_openrouter_config
 
-# 使用阿里云百炼 (推荐)
+# 使用阿里云百炼 (中国推荐)
 config = get_dashscope_config(market="A-share", model="deepseek-v3")
 
-# 使用 DeepSeek 官方
-config = get_deepseek_config(market="A-share")
+# 使用 OpenRouter (国际推荐)
+config = get_openrouter_config(market="US", model="gpt-4o")
 ```
 
 ### 4.4 `analysis_service/main.py`
@@ -395,8 +395,9 @@ railway volume add --mount-path /app/data
 
 | 变量 | 必需 | 说明 |
 |------|------|------|
-| `DASHSCOPE_API_KEY` | 推荐 | 阿里云百炼 API Key |
-| `DEEPSEEK_API_KEY` | 备选 | DeepSeek 官方 API Key |
+| `DASHSCOPE_API_KEY` | 推荐 (中国) | 阿里云百炼 API Key |
+| `OPENROUTER_API_KEY` | 推荐 (国际) | OpenRouter API Key (400+ 模型) |
+| `OPENAI_API_KEY` | 备选 | OpenAI 直连 API Key |
 | `INVITE_CODES` | Web | 用户凭据 `user1:pass1,user2:pass2` |
 | `ADMIN_USERS` | Web | 管理员 `user1,user2` |
 | `DATA_DIR` | Railway | 必须设为 `/app/data` |

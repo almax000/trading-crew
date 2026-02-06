@@ -41,7 +41,7 @@ Health check endpoint.
 {
   "status": "healthy",
   "has_dashscope": true,
-  "has_deepseek": false
+  "has_openrouter": false
 }
 ```
 
@@ -174,4 +174,6 @@ Delete a session.
 |-------|----------|-------------|
 | deepseek-v3 | DashScope | DeepSeek V3 via Alibaba Cloud |
 | qwen3-max | DashScope | Qwen3 Max via Alibaba Cloud |
-| deepseek-official | DeepSeek | DeepSeek official API |
+| gpt-4o | OpenRouter | OpenAI GPT-4o |
+| claude-sonnet-4 | OpenRouter | Anthropic Claude Sonnet 4 |
+| deepseek/deepseek-chat-v3-0324 | OpenRouter | DeepSeek V3 via OpenRouter |
