@@ -1,0 +1,13 @@
+# TradingCrew Analysis Service Dependencies
+# These dependencies are provided by the main project's requirements.txt; this file is for reference only
+
+fastapi>=0.104.0
+uvicorn>=0.24.0
+python-dotenv>=1.0.0
+
+# Core analysis dependencies (from main project)
+# langchain
+# langgraph
+# openai / anthropic
+# yfinance
+# akshare
