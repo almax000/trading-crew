@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "scope": "synthetic-workshop-review",
+  "sources": {
+    "synthetic-note-a": [
+      "The maintenance log has no inspection date.",
+      "  The throughput estimate has no source.\n"
+    ],
+    "synthetic-note-b": [
+      "  The throughput estimate has no source.\n"
+    ]
+  },
+  "judgments": [
+    {
+      "issue_id": "issue-cd20f442fd4708dcf18e207fa9a97fa9227b1d31a70a0adca638f98619fc6c04",
+      "label": "needs_evidence"
+    },
+    {
+      "issue_id": "issue-34c8a5c03cf955b7b4338931653349fb4b11caa46c8d48f77ba877a2903c2ae4",
+      "label": "needs_evidence"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "synthetic-attempt-1",
+      "response_attempt_id": "synthetic-attempt-1",
+      "counters": {
+        "input_tokens": 8,
+        "output_tokens": 5,
+        "total_tokens": 13
+      }
+    },
+    {
+      "attempt_id": "synthetic-attempt-2"
+    },
+    {
+      "attempt_id": "synthetic-attempt-3",
+      "response_attempt_id": "synthetic-attempt-1",
+      "counters": {
+        "input_tokens": 8,
+        "output_tokens": 5,
+        "total_tokens": 13
+      }
+    }
+  ],
+  "flows": [
+    {
+      "value": "30",
+      "unit": "millions",
+      "currency": "SYN",
+      "basis": "reported",
+      "scope": "Example Workshop",
+      "start": "2024-01-01",
+      "end": "2024-03-31",
+      "evidence_id": "synthetic-operating-surplus"
+    },
+    {
+      "value": "120",
+      "unit": "millions",
+      "currency": "SYN",
+      "basis": "reported",
+      "scope": "Example Workshop",
+      "start": "2024-01-01",
+      "end": "2024-03-31",
+      "evidence_id": "synthetic-sales"
+    }
+  ]
+}

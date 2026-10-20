@@ -2,6 +2,22 @@
 
 > This document is designed for Claude Code agents to quickly understand and work with the project.
 
+## Current maintenance scope
+
+Active feature development is paused. The new `examples/offline_reliability/`
+package is independent of the historical application described below. Its checks
+are not wired into the legacy live paths. Validate it from the repository root:
+
+```bash
+python3 -m unittest examples.offline_reliability.tests -v
+python3 -m examples.offline_reliability
+```
+
+These commands require only the Python 3.9+ standard library and no credentials.
+The root `test.py` is a legacy market-data script, not this offline test suite.
+Keep fixtures synthetic and preserve the root license and upstream notices.
+The retrospective in `docs/` explains the verified scope and limitations.
+
 ---
 
 ## 1. Project Overview

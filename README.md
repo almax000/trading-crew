@@ -7,7 +7,33 @@ Multi-agent LLM trading framework with Web GUI and China A-share support.
 
 [中文文档](./README-zh.md)
 
-## Features
+## Project status
+
+Active feature development is paused as the maintainer's time moves to other
+projects. The application below is historical research code; ongoing provider,
+model and market-data compatibility is not guaranteed.
+
+This closing update adds independent, **offline reliability examples**: preserve
+source issues, keep missing usage unknown, check metric comparability, and replay
+synthetic inputs. They need only Python 3.9+ and do not load the trading engine.
+These checks have not been integrated into the legacy application's live paths.
+
+```bash
+python3 -m examples.offline_reliability
+python3 -m unittest examples.offline_reliability.tests -v
+```
+
+[Example contracts and limits](./examples/offline_reliability/README.md)
+
+[Engineering retrospective](./docs/engineering-retrospective.md)
+
+[开发复盘（中文）](./docs/engineering-retrospective-zh.md)
+
+Only the new offline examples are validated by this update. Legacy model calls,
+market data and the web application have not been revalidated. No trading
+performance claim follows from these tests.
+
+## Features (legacy application)
 
 - **Multi-agent debate system**: Analysts → Researchers (bull/bear debate) → Trader → Risk team → Decision
 - **Web GUI**: Real-time streaming analysis with SSE

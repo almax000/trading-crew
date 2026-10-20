@@ -3,6 +3,27 @@
 > **注意**: 本项目基于 [TradingAgents](https://github.com/TauricResearch/TradingAgents)
 > (TauricResearch, Apache 2.0) 衍生开发，新增了 Web GUI 和 A 股市场支持。
 
+## 项目状态
+
+维护者将时间转向其他项目，暂停主动功能开发。下方原应用作为历史研究代码保留，
+不承诺模型、供应商或行情接口的持续兼容。
+
+本次收尾新增可独立运行的离线可靠性示例：原始问题完整传递、未知用量保留未知、
+计算前检查指标口径，以及冻结虚构输入的重放。只需 Python 3.9+，不加载交易引擎，
+不调用外部服务。这些检查尚未接入旧应用的实际运行链路。
+
+```bash
+python3 -m examples.offline_reliability
+python3 -m unittest examples.offline_reliability.tests -v
+```
+
+[示例契约与边界](./examples/offline_reliability/README.md)
+
+[开发复盘](./docs/engineering-retrospective-zh.md)
+
+本轮验证范围仅覆盖新增离线示例；下方模型名单、行情功能和 Web 应用没有重新验收。
+测试通过不代表交易效果得到验证。
+
 ---
 
 ## 架构
